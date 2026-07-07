@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kanso</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kanso Beta</title>
+<style>
+body{margin:0;background:#F7F4EE;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#2b2b2b}
+.wrap{max-width:900px;margin:auto;padding:16px}
+.box{background:#fff;border:1px solid #ddd6cc;border-radius:14px;padding:14px}
+button{padding:10px 14px;margin:4px;border-radius:10px;border:1px solid #8b7a67;background:#efe7da}
+#cards{margin-top:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.card{border:1px solid #ddd6cc;border-radius:10px;padding:8px;background:#fff;min-height:96px}
+small{color:#666}
+h3{font:600 16px Georgia,serif;margin:8px 0}
+@media(max-width:500px){.card{min-height:84px}h3{font-size:14px}}
+</style>
 </head>
 <body>
-<div class="app">
-<header>
-<h1>Kanso</h1>
-<p class="subtitle">A quiet tarot deck.</p>
-</header>
-
-<main>
-<section class="controls">
-<div class="spread-picker">
-<button id="spread3" class="spread-btn active">Three Cards</button>
-<button id="spread9" class="spread-btn">Nine Cards</button>
+<div class="wrap">
+<div class="box">
+<button id="b3">Three Cards</button>
+<button id="b9">Nine Cards</button>
+<label><input type="checkbox" id="rev" checked> Reversals</label>
+<button id="draw">Shuffle & Draw</button>
 </div>
-
-<label class="reverse-toggle">
-<input type="checkbox" id="reversalToggle" checked>
-Include Reversals
-</label>
-
-<button id="drawButton" class="draw-button">
-Shuffle & Draw
-</button>
-</section>
-
-<section id="readingArea">
-<!-- app.js will render the spread here -->
-</section>
-</main>
-
-<footer>
-<div id="readingInfo"></div>
-</footer>
+<div id="cards"></div>
 </div>
-
-<script src="app.js"></script>
+<script>
+const majors=["The Fool","The Magician","The High Priestess","The Empress","The Emperor","The Hierophant","The Lovers","The Chariot","Strength","The Hermit","Wheel of Fortune","Justice","The Hanged Man","Death","Temperance","The Devil","The Tower","The Star","The Moon","The Sun","Judgement","The World"];
+const suits=["Wands","Cups","Swords","Pentacles"],ranks=["Ace","2","3","4","5","6","7","8","9","10","Page","Knight","Queen","King"];
+const deck=[...majors];for(const s of suits){for(const r of ranks)deck.push(r+" of "+s);}
+let n=3;
+b3.onclick=()=>n=3;b9.onclick=()=>n=9;
+function rnd(m){if(crypto&&crypto.getRandomValues){let a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%m;}return Math.floor(Math.random()*m);}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+draw.onclick=()=>{
+ let d=shuffle(deck),html='<div class="'+(n==3?'grid3':'grid9')+'">';
+ let labels=["Past","Present","Future"];
+ for(let i=0;i<n;i++){
+   let r=rev.checked&&rnd(2);
+   html+=`<div class="card"><small>${n==3?labels[i]:"Position "+(i+1)}</small><h3>${d[i]}</h3><div>${r?"↧ Reversed":"↑ Upright"}</div></div>`;
+ }
+ html+='</div>';
+ cards.innerHTML=html;
+};
+</script>
 </body>
 </html>
