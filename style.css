@@ -1,0 +1,154 @@
+
+:root{
+ --paper:#F7F4EE;
+ --surface:#FFFEFC;
+ --line:#DDD6CC;
+ --ink:#2B2B2B;
+ --muted:#726D66;
+ --accent:#8B7A67;
+}
+
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:var(--paper);
+ color:var(--ink);
+ font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+}
+
+.app{
+ width:100%;
+ max-width:760px;
+ margin:auto;
+ padding:18px;
+}
+
+header{
+ text-align:center;
+ margin-bottom:12px;
+}
+
+h1{
+ margin:0;
+ font-family:Georgia,serif;
+ font-weight:400;
+}
+
+.subtitle{
+ color:var(--muted);
+ margin:4px 0;
+}
+
+.controls{
+ background:var(--surface);
+ border:1px solid var(--line);
+ border-radius:16px;
+ padding:14px;
+}
+
+.spread-picker{
+ display:flex;
+ gap:10px;
+}
+
+.spread-btn,.draw-button{
+ flex:1;
+ border:1px solid var(--accent);
+ background:#F3EEDF;
+ border-radius:12px;
+ padding:12px;
+ color:var(--ink);
+}
+
+.spread-btn.active{
+ background:#E8DDC8;
+}
+
+.reverse-toggle{
+ display:block;
+ margin:12px 0;
+}
+
+.draw-button{
+ width:100%;
+}
+
+#readingArea{
+ margin-top:14px;
+ background:var(--surface);
+ border:1px solid var(--line);
+ border-radius:16px;
+ padding:12px;
+ min-height:360px;
+}
+
+.spread-nine{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ align-items:center;
+}
+
+.card{
+ background:white;
+ border:1px solid var(--line);
+ border-radius:10px;
+ padding:10px;
+ min-height:110px;
+ overflow-wrap:anywhere;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+}
+
+.card.center{
+ transform:scale(1.03);
+}
+
+.card-title{
+ color:var(--muted);
+ font-size:.8rem;
+}
+
+.card-name{
+ font-family:Georgia,serif;
+ font-size:1rem;
+ margin:8px 0;
+}
+
+.card-state{
+ font-size:.9rem;
+}
+
+footer{
+ text-align:center;
+ color:var(--muted);
+ font-size:.85rem;
+ margin-top:12px;
+}
+
+@media(max-width:480px){
+ .app{
+  padding:12px;
+ }
+ .spread-nine{
+  gap:6px;
+ }
+ .card{
+  min-height:95px;
+  padding:8px;
+ }
+ .card-name{
+  font-size:.85rem;
+ }
+}
+
+@media(min-width:900px){
+ .app{
+  max-width:900px;
+ }
+ #readingArea{
+  padding:24px;
+ }
+}
