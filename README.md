@@ -1,1 +1,1 @@
-# Kanso-Tarot
+# Kanso
