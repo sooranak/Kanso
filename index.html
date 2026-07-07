@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanso</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<header>
+<h1>Kanso</h1>
+<p class="subtitle">A quiet tarot deck.</p>
+</header>
+
+<main>
+<section class="controls">
+<div class="spread-picker">
+<button id="spread3" class="spread-btn active">Three Cards</button>
+<button id="spread9" class="spread-btn">Nine Cards</button>
+</div>
+
+<label class="reverse-toggle">
+<input type="checkbox" id="reversalToggle" checked>
+Include Reversals
+</label>
+
+<button id="drawButton" class="draw-button">
+Shuffle & Draw
+</button>
+</section>
+
+<section id="readingArea">
+<!-- app.js will render the spread here -->
+</section>
+</main>
+
+<footer>
+<div id="readingInfo"></div>
+</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
