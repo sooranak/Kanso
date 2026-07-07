@@ -6,16 +6,23 @@
 <title>Kanso Beta</title>
 <style>
 body{margin:0;background:#F7F4EE;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#2b2b2b}
-.wrap{max-width:900px;margin:auto;padding:16px}
+.wrap{max-width:980px;margin:auto;padding:16px}
 .box{background:#fff;border:1px solid #ddd6cc;border-radius:14px;padding:14px}
 button{padding:10px 14px;margin:4px;border-radius:10px;border:1px solid #8b7a67;background:#efe7da}
-#cards{margin-top:16px}
+#cards{margin-top:18px}
+.board{position:relative;width:min(92vw,760px);aspect-ratio:3/4;margin:auto}
+.card{position:absolute;width:22%;aspect-ratio:.68;background:#fff;border:1px solid #ddd6cc;border-radius:10px;
+padding:6px;box-sizing:border-box;text-align:center;display:flex;flex-direction:column;justify-content:center}
+small{color:#666;font-size:11px}
+h3{font:600 15px Georgia,serif;margin:6px 0}
+@media(max-width:500px){
+ .board{width:96vw}
+ .card{width:24%;padding:4px}
+ h3{font-size:11px;margin:3px 0}
+ small{font-size:9px}
+}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.card{border:1px solid #ddd6cc;border-radius:10px;padding:8px;background:#fff;min-height:96px}
-small{color:#666}
-h3{font:600 16px Georgia,serif;margin:8px 0}
-@media(max-width:500px){.card{min-height:84px}h3{font-size:14px}}
+.grid3 .card{position:static;width:auto;aspect-ratio:auto;min-height:90px}
 </style>
 </head>
 <body>
@@ -30,21 +37,41 @@ h3{font:600 16px Georgia,serif;margin:8px 0}
 </div>
 <script>
 const majors=["The Fool","The Magician","The High Priestess","The Empress","The Emperor","The Hierophant","The Lovers","The Chariot","Strength","The Hermit","Wheel of Fortune","Justice","The Hanged Man","Death","Temperance","The Devil","The Tower","The Star","The Moon","The Sun","Judgement","The World"];
-const suits=["Wands","Cups","Swords","Pentacles"],ranks=["Ace","2","3","4","5","6","7","8","9","10","Page","Knight","Queen","King"];
-const deck=[...majors];for(const s of suits){for(const r of ranks)deck.push(r+" of "+s);}
+const suits=["Wands","Cups","Swords","Pentacles"];
+const ranks=["Ace","2","3","4","5","6","7","8","9","10","Page","Knight","Queen","King"];
+const deck=[...majors];
+for(const s of suits){for(const r of ranks){deck.push(r+" of "+s);}}
 let n=3;
-b3.onclick=()=>n=3;b9.onclick=()=>n=9;
-function rnd(m){if(crypto&&crypto.getRandomValues){let a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%m;}return Math.floor(Math.random()*m);}
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const b3=document.getElementById("b3");
+const b9=document.getElementById("b9");
+const draw=document.getElementById("draw");
+const rev=document.getElementById("rev");
+const cards=document.getElementById("cards");
+b3.onclick=()=>n=3;
+b9.onclick=()=>n=9;
+function rnd(m){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%m;}catch{return Math.floor(Math.random()*m);}}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const pos=[[39,0],[12,18],[39,18],[66,18],[39,39],[20,58],[58,58],[20,77],[58,77]];
 draw.onclick=()=>{
- let d=shuffle(deck),html='<div class="'+(n==3?'grid3':'grid9')+'">';
- let labels=["Past","Present","Future"];
- for(let i=0;i<n;i++){
-   let r=rev.checked&&rnd(2);
-   html+=`<div class="card"><small>${n==3?labels[i]:"Position "+(i+1)}</small><h3>${d[i]}</h3><div>${r?"↧ Reversed":"↑ Upright"}</div></div>`;
+ const d=shuffle(deck);
+ if(n===3){
+   let h='<div class="grid3">';
+   const lab=["Past","Present","Future"];
+   for(let i=0;i<3;i++){
+    h+=`<div class="card"><small>${lab[i]}</small><h3>${d[i]}</h3><div>${rev.checked&&rnd(2)?"↧ Reversed":"↑ Upright"}</div></div>`;
+   }
+   h+="</div>";
+   cards.innerHTML=h;
+   return;
  }
- html+='</div>';
- cards.innerHTML=html;
+ let h='<div class="board">';
+ for(let i=0;i<9;i++){
+   const r=rev.checked&&rnd(2);
+   h+=`<div class="card" style="left:${pos[i][0]}%;top:${pos[i][1]}%">
+   <small>${i+1}</small><h3>${d[i]}</h3><div>${r?"↧":"↑"}</div></div>`;
+ }
+ h+="</div>";
+ cards.innerHTML=h;
 };
 </script>
 </body>
